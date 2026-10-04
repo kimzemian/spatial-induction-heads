@@ -117,8 +117,7 @@
               <span class="author-block">
                 <a href="https://kimia.boo/" target="_blank">Kimia Kazemian</a><sup>*</sup>,</span>
               <span class="author-block">
-                <!-- TODO: add Menghan's homepage link -->
-                Menghan Xu<sup>*</sup>,</span>
+                <a href="https://menghan-xu.github.io/" target="_blank">Menghan Xu</a><sup>*</sup>,</span>
               <span class="author-block">
                 <a href="https://johnthickstun.com/" target="_blank">John Thickstun</a>,</span>
               <span class="author-block">
@@ -214,16 +213,9 @@
             neighbors in space can end up far apart in the sequence. Vision Transformers use learned positional
             embeddings rather than explicit row&ndash;column coordinates, yet they still learn representations that
             capture spatial structure: without object labels or segmentation masks, a self-supervised ViT
-            learns attention maps that pick out objects and their boundaries.
+            (<a href="https://arxiv.org/abs/2104.14294" target="_blank">DINO</a>) learns attention maps that pick out objects and their boundaries.
           </p>
         </div>
-        <figure class="paper-figure">
-          <img src="static/images/dino_attention.png" alt="Self-supervised ViT attention maps highlighting objects" loading="lazy">
-          <figcaption>
-            Attention maps from a self-supervised ViT. Source: Caron et al.,
-            <a href="https://arxiv.org/abs/2104.14294" target="_blank"><em>Emerging Properties in Self-Supervised Vision Transformers</em></a> (DINO), ICCV 2021.
-          </figcaption>
-        </figure>
         <p class="callout">What attention mechanism can recover spatial neighborhoods from a flattened token sequence?</p>
       </div>
 
