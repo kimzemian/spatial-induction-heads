@@ -817,10 +817,11 @@ a:focus {
 }
 .diagram { width: 100%; height: auto; display: block; }
 .diagram .tok { fill: var(--ca-paper); stroke: #c9c2b6; stroke-width: 1; }
-.diagram .tok.on { fill: var(--ca-ink); }
-.diagram .tok.match { stroke: #d4a017; stroke-width: 3; }
-.diagram .tok.query { stroke: var(--ca-target); stroke-width: 3; }
-.diagram .tok.next { stroke: var(--ca-query); stroke-width: 3; }
+.diagram .tok-txt { fill: var(--ca-ink); font-size: 16px; font-weight: 600; }
+.diagram .blk { fill: none; stroke-width: 2.5; }
+.diagram .blk-match { stroke: #d4a017; }
+.diagram .blk-query { stroke: var(--ca-target); }
+.diagram .blk-next { stroke: var(--ca-query); }
 .diagram .tok.target { fill: var(--ca-target); stroke: none; }
 .diagram .target-text { fill: #fff; font-weight: 700; font-size: 16px; }
 .diagram .arc { fill: none; stroke: var(--ca-target); stroke-width: 1.6; }

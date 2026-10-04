@@ -210,11 +210,11 @@
         <h3 class="title is-4">How do transformers recover spatial structure from sequences?</h3>
         <div class="content">
           <p>
-            Images and spatial trajectories reach a transformer as sequences of tokens, so cells that are
-            neighbors in space can end up far apart in the sequence. Vision Transformers use learned positional
-            embeddings rather than explicit row&ndash;column coordinates, yet they still learn representations that
-            capture spatial structure: without object labels or segmentation masks, a self-supervised ViT
-            (<a href="https://arxiv.org/abs/2104.14294" target="_blank">DINO</a>) learns attention maps that pick out objects and their boundaries.
+            Images and spatial trajectories reach a transformer as a one-dimensional stream of tokens.
+            Serializing a grid this way breaks local adjacency: cells that are neighbors in space end up far apart
+            in the sequence. Yet vision transformers with only learned absolute positional embeddings work well.
+            They are never given row&ndash;column coordinates, and they still recover much of the underlying 2D
+            structure. How they do this mechanistically is not understood.
           </p>
         </div>
         <p class="callout">What attention mechanism can recover spatial neighborhoods from a flattened token sequence?</p>
@@ -243,30 +243,25 @@
         <div class="columns is-variable is-5">
           <div class="column">
             <h4 class="diagram-title">Sequential data: the context is a contiguous block</h4>
-            <svg class="diagram" viewBox="0 0 480 138" role="img" aria-label="An induction head matches the k tokens before the query to an earlier occurrence and copies what followed">
+            <svg class="diagram" viewBox="0 0 440 152" role="img" aria-label="An induction head matches the tokens before the query to an earlier occurrence and copies the token that followed">
               <defs>
                 <marker id="arrSeq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e9704f"/></marker>
               </defs>
-              <g font-family="Inter, sans-serif" font-size="13" text-anchor="middle">
-                <!-- tokens: 1 0 1 1 0 0 1 0 1 1 1 0 1 ? -->
-                <g transform="translate(4,40)">
-                  <rect x="0"   width="30" height="30" rx="3" class="tok on match"/><rect x="34"  width="30" height="30" rx="3" class="tok match"/><rect x="68"  width="30" height="30" rx="3" class="tok on match"/>
-                  <rect x="102" width="30" height="30" rx="3" class="tok on next"/>
-                  <rect x="136" width="30" height="30" rx="3" class="tok"/><rect x="170" width="30" height="30" rx="3" class="tok"/>
-                  <rect x="204" width="30" height="30" rx="3" class="tok on match"/><rect x="238" width="30" height="30" rx="3" class="tok match"/><rect x="272" width="30" height="30" rx="3" class="tok on match"/>
-                  <rect x="306" width="30" height="30" rx="3" class="tok on next"/>
-                  <rect x="340" width="30" height="30" rx="3" class="tok on query"/><rect x="374" width="30" height="30" rx="3" class="tok query"/><rect x="408" width="30" height="30" rx="3" class="tok on query"/>
-                  <rect x="442" width="30" height="30" rx="3" class="tok target"/>
-                  <text x="457" y="20" class="target-text">?</text>
-                </g>
-                <path d="M 393 38 C 393 18, 259 18, 259 35" class="arc" marker-end="url(#arrSeq)"/>
-                <text x="326" y="12" class="lbl">1&#8201; match: find the same context earlier</text>
-                <text x="393" y="86" class="sub">context (k tokens)</text>
-                <path d="M 325 72 C 325 124, 461 124, 461 75" class="arc" marker-end="url(#arrSeq)"/>
-                <text x="393" y="132" class="lbl">2&#8201; copy what followed it</text>
+              <g font-family="Inter, sans-serif" text-anchor="middle">
+                <rect x="26" y="60" width="36" height="36" rx="4" class="tok"/><rect x="70" y="60" width="36" height="36" rx="4" class="tok"/><rect x="114" y="60" width="36" height="36" rx="4" class="tok"/><rect x="158" y="60" width="36" height="36" rx="4" class="tok"/><rect x="202" y="60" width="36" height="36" rx="4" class="tok"/><rect x="246" y="60" width="36" height="36" rx="4" class="tok"/><rect x="290" y="60" width="36" height="36" rx="4" class="tok"/><rect x="334" y="60" width="36" height="36" rx="4" class="tok"/>
+                <rect x="378" y="60" width="36" height="36" rx="4" class="tok target"/>
+                <text x="44" y="84" class="tok-txt">D</text><text x="88" y="84" class="tok-txt">A</text><text x="132" y="84" class="tok-txt">B</text><text x="176" y="84" class="tok-txt">C</text><text x="220" y="84" class="tok-txt">E</text><text x="264" y="84" class="tok-txt">F</text><text x="308" y="84" class="tok-txt">A</text><text x="352" y="84" class="tok-txt">B</text>
+                <text x="396" y="84" class="target-text">?</text>
+                <rect x="67" y="57" width="86" height="42" rx="6" class="blk blk-match"/>
+                <rect x="155" y="57" width="42" height="42" rx="6" class="blk blk-next"/>
+                <rect x="287" y="57" width="86" height="42" rx="6" class="blk blk-query"/>
+                <path d="M 330 54 C 330 16, 110 16, 110 54" class="arc" marker-end="url(#arrSeq)"/>
+                <text x="220" y="12" class="lbl">&#9312; match</text>
+                <path d="M 176 101 C 176 134, 396 134, 396 99" class="arc" marker-end="url(#arrSeq)"/>
+                <text x="286" y="148" class="lbl">&#9313; copy</text>
               </g>
             </svg>
-            <p class="diagram-note">The context is the <i>k</i> tokens just before the query, at fixed offsets.</p>
+            <p class="diagram-note">The query&rsquo;s context is the <i>k</i> tokens just before it (orange). An induction head finds the same tokens earlier (gold) and copies what followed (teal).</p>
           </div>
           <div class="column">
             <h4 class="diagram-title">Spatial data: the needed tokens are scattered</h4>
@@ -322,7 +317,7 @@
         <div class="columns is-variable is-3 question-cards">
           <div class="column"><div class="qcard"><span class="qnum">1</span>How can attention recover the relevant spatial neighborhood?</div></div>
           <div class="column"><div class="qcard"><span class="qnum">2</span>How can it use that neighborhood to infer an unknown rule from context?</div></div>
-          <div class="column"><div class="qcard"><span class="qnum">3</span>What is the smallest model that can do this? Can the required width be independent of grid size?</div></div>
+          <div class="column"><div class="qcard"><span class="qnum">3</span>Can we theoretically construct a minimal transformer that does both?</div></div>
         </div>
       </div>
     </div>
@@ -540,8 +535,8 @@
           <p>Layer 2 retrieves earlier examples with matching neighborhoods and aggregates their outcomes to predict the next state.</p>
         </div></div>
         <div class="column is-half"><div class="takeaway">
-          <p class="takeaway-q">Can we explain both abilities theoretically?</p>
-          <p>A two-layer transformer is enough for gather-and-match, with width independent of grid size and trajectory horizon. It predicts exactly for deterministic rules and arbitrarily close to the Bayesian posterior for stochastic rules.<sup>&dagger;</sup></p>
+          <p class="takeaway-q">Can we theoretically construct a minimal transformer that does both?</p>
+          <p>Yes. Two layers suffice for gather-and-match, with width independent of grid size and trajectory length. It predicts exactly for deterministic rules and arbitrarily close to the Bayesian posterior for stochastic rules.<sup>&dagger;</sup></p>
         </div></div>
         <div class="column is-half"><div class="takeaway">
           <p class="takeaway-q">Do trained models exhibit the predicted mechanism?</p>
