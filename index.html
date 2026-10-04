@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata">
+  <meta name="description" content="Two-layer gather-and-match circuits let transformers recover spatial neighborhoods from flattened sequences and infer unknown cellular-automaton rules in context.">
+  <meta name="keywords" content="in-context learning, induction heads, transformers, cellular automata, mechanistic interpretability, Bayesian inference, spatial reasoning">
+  <meta name="author" content="Kimia Kazemian*, Menghan Xu*, John Thickstun, Sarah Dean">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Cornell University">
+  <meta property="og:title" content="Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata">
+  <meta property="og:description" content="Two-layer gather-and-match circuits let transformers recover spatial neighborhoods from flattened sequences and infer unknown cellular-automaton rules in context.">
+  <meta property="og:url" content="https://kimzemian.github.io/spatial-induction-heads/">
+  <meta property="og:image" content="https://kimzemian.github.io/spatial-induction-heads/static/images/teaser_rollout.png">
+  <meta property="og:image:alt" content="A trained transformer continuing held-out cellular automata from context">
+  <meta property="article:author" content="Kimia Kazemian">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="in-context learning">
+  <meta property="article:tag" content="induction heads">
+  <meta property="article:tag" content="cellular automata">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata">
+  <meta name="twitter:description" content="Two-layer gather-and-match circuits let transformers recover spatial neighborhoods from flattened sequences and infer unknown cellular-automaton rules in context.">
+  <meta name="twitter:image" content="https://kimzemian.github.io/spatial-induction-heads/static/images/teaser_rollout.png">
+  <meta name="twitter:image:alt" content="A trained transformer continuing held-out cellular automata from context">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata">
+  <meta name="citation_author" content="Kazemian, Kimia">
+  <meta name="citation_author" content="Xu, Menghan">
+  <meta name="citation_author" content="Thickstun, John">
+  <meta name="citation_author" content="Dean, Sarah">
+  <meta name="citation_publication_date" content="2026">
+  <!-- TODO: add citation_pdf_url once the arXiv version is up -->
+
+  <meta name="theme-color" content="#284b5a">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>Spatial Induction Heads | In-Context Learning of Multidimensional Cellular Automata</title>
+
+  <!-- Favicon: a 3x3 cellular-automaton neighborhood -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='5' fill='%23f3efe8'/%3E%3Crect x='11' y='2' width='8' height='8' fill='%23284b5a'/%3E%3Crect x='2' y='11' width='8' height='8' fill='%23284b5a'/%3E%3Crect x='11' y='11' width='8' height='8' fill='%23e9704f'/%3E%3Crect x='20' y='11' width='8' height='8' fill='%23284b5a'/%3E%3Crect x='11' y='20' width='8' height='8' fill='%23284b5a'/%3E%3C/svg%3E">
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  </noscript>
+
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata",
+    "description": "Two-layer gather-and-match circuits let transformers recover spatial neighborhoods from flattened sequences and infer unknown cellular-automaton rules in context.",
+    "author": [
+      {"@type": "Person", "name": "Kimia Kazemian", "affiliation": {"@type": "Organization", "name": "Cornell University"}},
+      {"@type": "Person", "name": "Menghan Xu", "affiliation": {"@type": "Organization", "name": "Cornell University"}},
+      {"@type": "Person", "name": "John Thickstun", "affiliation": {"@type": "Organization", "name": "Cornell University"}},
+      {"@type": "Person", "name": "Sarah Dean", "affiliation": {"@type": "Organization", "name": "Cornell University"}}
+    ],
+    "datePublished": "2026",
+    "url": "https://kimzemian.github.io/spatial-induction-heads/",
+    "image": "https://kimzemian.github.io/spatial-induction-heads/static/images/teaser_rollout.png",
+    "keywords": ["in-context learning", "induction heads", "transformers", "cellular automata", "mechanistic interpretability"],
+    "isAccessibleForFree": true
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://kimia.boo/" target="_blank">Kimia Kazemian</a><sup>*</sup>,</span>
+              <span class="author-block">
+                <!-- TODO: add Menghan's homepage link -->
+                Menghan Xu<sup>*</sup>,</span>
+              <span class="author-block">
+                <a href="https://johnthickstun.com/" target="_blank">John Thickstun</a>,</span>
+              <span class="author-block">
+                <a href="https://sdean.website/" target="_blank">Sarah Dean</a></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Cornell University</span>
+              <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- TODO: arXiv link. Replace this disabled button with:
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv</span>
+                  </a>
+                </span>
+                -->
+                <span class="link-block">
+                  <a class="external-link button is-normal is-rounded is-dark" disabled aria-disabled="true" title="arXiv version coming soon">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv (coming soon)</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://github.com/sdean-group/ICL-CA" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-quote-right"></i></span>
+                    <span>BibTeX</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <figure class="paper-figure">
+          <img src="static/images/teaser_rollout.png" alt="Ground truth, teacher-forced, and autoregressive predictions for Rule 110 and the Stavskaya stochastic automaton">
+        </figure>
+        <h2 class="subtitle has-text-centered teaser-caption">
+          A two-layer transformer continues cellular automata it has <em>never seen during training</em>, from context alone.
+          Top: Wolfram Rule 110 (deterministic, Turing-complete). Bottom: Stavskaya, a stochastic CA with <i>p</i>&nbsp;=&nbsp;0.29,
+          colored by the predicted probability of state 1. The red box marks the context shown to the model.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Induction heads provide a mechanistic account of in-context learning in sequential data, but existing theory largely assumes that the context relevant to a prediction forms a contiguous block. In multidimensional data, serialization breaks this assumption by scattering spatial neighbors across distant positions in the token sequence. We study how transformers overcome this routing problem in multi-dimensional stochastic and deterministic cellular automata, where each trajectory is generated by an unknown local rule and presented as a flattened sequence without an explicit coordinate-based spatial inductive bias. We introduce <em>spatial induction heads</em>, two-layer gather-and-match circuits in which the first layer reconstructs the relevant spatial neighborhood and the second matches the resulting configuration against earlier occurrences. We give two explicit realizations of the gather and show that the positional dimension required for spatial routing depends only on the local neighborhood and spatial dimension, not on grid volume or trajectory horizon. We further construct a matching layer which implements Bayesian counting. The end-to-end circuit can approximate the Bayesian posterior arbitrarily closely for stochastic rules and can predict exactly for deterministic rules. Empirically, trained two-layer transformers generalize to unseen rules in one and two dimensional settings, achieving near-perfect deterministic rollouts and less than 0.005 nats KL from the Bayes-optimal predictor on stochastic rules. Attention patterns and layerwise probes align with the predicted gather-and-match computation, providing mechanistic evidence for spatial induction in trained transformers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Motivation -->
+  <section class="section" id="motivation">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Motivation</h2>
+
+      <div class="motivation-step">
+        <p class="step-label">Question 1</p>
+        <h3 class="title is-4">How do transformers recover spatial structure from sequences?</h3>
+        <div class="content">
+          <p>
+            Images and spatial trajectories reach a transformer as sequences of tokens, so cells that are
+            neighbors in space can end up far apart in the sequence. Vision Transformers use learned positional
+            embeddings rather than explicit row&ndash;column coordinates, yet they still learn representations that
+            capture spatial structure: without object labels or segmentation masks, a self-supervised ViT
+            learns attention maps that pick out objects and their boundaries.
+          </p>
+        </div>
+        <figure class="paper-figure">
+          <img src="static/images/dino_attention.png" alt="Self-supervised ViT attention maps highlighting objects" loading="lazy">
+          <figcaption>
+            Attention maps from a self-supervised ViT. Source: Caron et al.,
+            <a href="https://arxiv.org/abs/2104.14294" target="_blank"><em>Emerging Properties in Self-Supervised Vision Transformers</em></a> (DINO), ICCV 2021.
+          </figcaption>
+        </figure>
+        <p class="callout">What attention mechanism can recover spatial neighborhoods from a flattened token sequence?</p>
+      </div>
+
+      <div class="motivation-step">
+        <p class="step-label">Question 2</p>
+        <h3 class="title is-4">How do transformers use recovered structure to learn in context?</h3>
+        <div class="content">
+          <p>
+            Recognizing spatial structure is only the first step. In tasks like ARC, the model sees a few
+            input&ndash;output examples of an unknown spatial transformation, has to work out the transformation
+            from context, and then apply it to a new input, all with its weights frozen at test time.
+          </p>
+        </div>
+        <figure class="paper-figure">
+          <img src="static/images/arc_task.png" alt="ARC-AGI-1 task 3aa6fb7a: two input-output examples and a test input" loading="lazy">
+          <figcaption>ARC-AGI-1 task #3aa6fb7a: two input&ndash;output examples, then a test input whose output must be inferred.</figcaption>
+        </figure>
+        <p class="callout">Can a transformer learn <em>where to look</em> during training, and infer <em>how to predict</em> from context?</p>
+      </div>
+
+      <div class="motivation-step">
+        <p class="step-label">Starting point</p>
+        <h3 class="title is-4">Induction heads, and the missing piece</h3>
+        <div class="columns is-variable is-5">
+          <div class="column">
+            <h4 class="diagram-title">Sequential data: the context is a contiguous block</h4>
+            <svg class="diagram" viewBox="0 0 480 138" role="img" aria-label="An induction head matches the k tokens before the query to an earlier occurrence and copies what followed">
+              <defs>
+                <marker id="arrSeq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e9704f"/></marker>
+              </defs>
+              <g font-family="Inter, sans-serif" font-size="13" text-anchor="middle">
+                <!-- tokens: 1 0 1 1 0 0 1 0 1 1 1 0 1 ? -->
+                <g transform="translate(4,40)">
+                  <rect x="0"   width="30" height="30" rx="3" class="tok on match"/><rect x="34"  width="30" height="30" rx="3" class="tok match"/><rect x="68"  width="30" height="30" rx="3" class="tok on match"/>
+                  <rect x="102" width="30" height="30" rx="3" class="tok on next"/>
+                  <rect x="136" width="30" height="30" rx="3" class="tok"/><rect x="170" width="30" height="30" rx="3" class="tok"/>
+                  <rect x="204" width="30" height="30" rx="3" class="tok on match"/><rect x="238" width="30" height="30" rx="3" class="tok match"/><rect x="272" width="30" height="30" rx="3" class="tok on match"/>
+                  <rect x="306" width="30" height="30" rx="3" class="tok on next"/>
+                  <rect x="340" width="30" height="30" rx="3" class="tok on query"/><rect x="374" width="30" height="30" rx="3" class="tok query"/><rect x="408" width="30" height="30" rx="3" class="tok on query"/>
+                  <rect x="442" width="30" height="30" rx="3" class="tok target"/>
+                  <text x="457" y="20" class="target-text">?</text>
+                </g>
+                <path d="M 393 38 C 393 18, 259 18, 259 35" class="arc" marker-end="url(#arrSeq)"/>
+                <text x="326" y="12" class="lbl">1&#8201; match: find the same context earlier</text>
+                <text x="393" y="86" class="sub">context (k tokens)</text>
+                <path d="M 325 72 C 325 124, 461 124, 461 75" class="arc" marker-end="url(#arrSeq)"/>
+                <text x="393" y="132" class="lbl">2&#8201; copy what followed it</text>
+              </g>
+            </svg>
+            <p class="diagram-note">The context is the <i>k</i> tokens just before the query, at fixed offsets.</p>
+          </div>
+          <div class="column">
+            <h4 class="diagram-title">Spatial data: the needed tokens are scattered</h4>
+            <svg class="diagram" viewBox="0 0 480 150" role="img" aria-label="A von Neumann neighborhood on a grid becomes scattered tokens after row-major flattening">
+              <g font-family="Inter, sans-serif" text-anchor="middle">
+                <!-- 5x5 grid, cell 22 -->
+                <g transform="translate(6,18)">
+                  <g class="grid">
+                    <rect x="0" y="0" width="110" height="110" class="gridbg"/>
+                    <path d="M22 0V110M44 0V110M66 0V110M88 0V110M0 22H110M0 44H110M0 66H110M0 88H110"/>
+                  </g>
+                  <rect x="44" y="22" width="22" height="22" class="nb"/>
+                  <rect x="22" y="44" width="22" height="22" class="nb"/>
+                  <rect x="44" y="44" width="22" height="22" class="ctr"/>
+                  <rect x="66" y="44" width="22" height="22" class="nb"/>
+                  <rect x="44" y="66" width="22" height="22" class="nb"/>
+                  <g font-size="11" class="cell-lbl"><text x="55" y="37">N</text><text x="33" y="59">W</text><text x="55" y="59">C</text><text x="77" y="59">E</text><text x="55" y="81">S</text></g>
+                  <text x="55" y="128" font-size="11" class="sub">W &times; W grid</text>
+                </g>
+                <text x="142" y="78" font-size="11" class="sub">flatten</text>
+                <path d="M126 86 H158" class="arc-grey"/><path d="M152 81 L159 86 L152 91" class="arc-grey"/>
+                <!-- flattened rows 1..3 with separators: 17 tokens stride 18 -->
+                <g transform="translate(166,70)" font-size="10">
+                  <text x="-2" y="13" class="sub">&hellip;</text>
+                  <g transform="translate(8,0)">
+                    <rect x="0"   width="16" height="18" class="ftok"/><rect x="18"  width="16" height="18" class="ftok"/><rect x="36"  width="16" height="18" class="ftok nb"/><rect x="54"  width="16" height="18" class="ftok"/><rect x="72"  width="16" height="18" class="ftok"/>
+                    <text x="98" y="14" class="sep">|</text>
+                    <rect x="108" width="16" height="18" class="ftok"/><rect x="126" width="16" height="18" class="ftok nb"/><rect x="144" width="16" height="18" class="ftok ctr"/><rect x="162" width="16" height="18" class="ftok nb"/><rect x="180" width="16" height="18" class="ftok"/>
+                    <text x="206" y="14" class="sep">|</text>
+                    <rect x="216" width="16" height="18" class="ftok"/><rect x="234" width="16" height="18" class="ftok"/><rect x="252" width="16" height="18" class="ftok nb"/><rect x="270" width="16" height="18" class="ftok"/><rect x="288" width="16" height="18" class="ftok"/>
+                    <text x="312" y="13" class="sub">&hellip;</text>
+                    <g class="cell-lbl"><text x="44" y="13">N</text><text x="134" y="13">W</text><text x="152" y="13">C</text><text x="170" y="13">E</text><text x="260" y="13">S</text></g>
+                    <!-- distance brackets -->
+                    <path d="M44 24 V30 H152 V24" class="brk"/><path d="M152 24 V30 H260 V24" class="brk"/>
+                    <text x="98" y="44" class="sub">W tokens apart</text>
+                    <text x="206" y="44" class="sub">W tokens apart</text>
+                    <text x="152" y="-12" class="sub">row-major token sequence</text>
+                  </g>
+                </g>
+              </g>
+            </svg>
+            <p class="diagram-note">Horizontal neighbors stay adjacent; vertical neighbors are <i>W</i> tokens away, and in <i>d</i> dimensions the gaps grow with the grid.</p>
+          </div>
+        </div>
+        <div class="content">
+          <p>
+            Induction heads explain how transformers find a matching context earlier in the sequence and copy what came after it,
+            and that explanation comes with theoretical guarantees in Markov-chain settings. In spatial data, though, the tokens a
+            prediction depends on are not a contiguous block, they are not next to the query, and their positions follow a
+            structure the sequence never shows. This leaves three questions:
+          </p>
+        </div>
+        <div class="columns is-variable is-3 question-cards">
+          <div class="column"><div class="qcard"><span class="qnum">1</span>How can attention recover the relevant spatial neighborhood?</div></div>
+          <div class="column"><div class="qcard"><span class="qnum">2</span>How can it use that neighborhood to infer an unknown rule from context?</div></div>
+          <div class="column"><div class="qcard"><span class="qnum">3</span>What is the smallest model that can do this? Can the required width be independent of grid size?</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Setup -->
+  <section class="section hero is-light" id="setup">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Cellular automata: a controlled setting for spatial ICL</h2>
+      <div class="columns is-variable is-4 setup-points">
+        <div class="column">
+          <p class="point-title">Spatial structure</p>
+          <p>Each cell&rsquo;s next state depends on a fixed local neighborhood.</p>
+        </div>
+        <div class="column">
+          <p class="point-title">In-context learning</p>
+          <p>An unknown update rule is shared across a trajectory and changes between trajectories.</p>
+        </div>
+        <div class="column">
+          <p class="point-title">A precise theoretical target</p>
+          <p>We can write down the optimal predictor and ask whether a two-layer transformer can implement it.</p>
+        </div>
+      </div>
+      <div class="content">
+        <p>
+          The model gets only the flattened trajectory, with no description of the rule, and has to predict every next cell.
+          Inputs are cell-state tokens plus row and time separators. Positions come from a learned absolute positional table,
+          as in ViT, and the model is never given row&ndash;column coordinates.
+        </p>
+      </div>
+
+      <h3 class="title is-5 gallery-title">Simple local rules, very different dynamics</h3>
+      <div class="rule-gallery">
+        <figure><img src="static/images/rule108.png" alt="Rule 108" loading="lazy"><figcaption><strong>Rule 108</strong> Simple: freezes into stripes and blinkers</figcaption></figure>
+        <figure><img src="static/images/rule90.png" alt="Rule 90" loading="lazy"><figcaption><strong>Rule 90</strong> Fractal: a Sierpi&#324;ski triangle from one cell</figcaption></figure>
+        <figure><img src="static/images/rule30.png" alt="Rule 30" loading="lazy"><figcaption><strong>Rule 30</strong> Chaotic: aperiodic, from a single cell</figcaption></figure>
+        <figure><img src="static/images/rule110.png" alt="Rule 110" loading="lazy"><figcaption><strong>Rule 110</strong> Complex: interacting structures; Turing-complete</figcaption></figure>
+        <figure><img src="static/images/rule184.png" alt="Rule 184" loading="lazy"><figcaption><strong>Rule 184</strong> Traffic flow: particles drift and jam</figcaption></figure>
+        <figure><img src="static/images/stavskaya.png" alt="Stavskaya stochastic automaton" loading="lazy"><figcaption><strong>Stavskaya, <i>p</i> = 0.29</strong> Stochastic: next state drawn from <i>f</i>(&middot; | <i>c</i>)</figcaption></figure>
+      </div>
+      <p class="diagram-note has-text-centered">
+        Every panel uses the same three-cell neighborhood; only the rule table <i>f</i> changes. Each trajectory in our task gets a fresh <i>f</i>.
+      </p>
+
+      <div class="columns is-variable is-4 stat-row">
+        <div class="column"><div class="box has-text-centered"><p class="heading">1D elementary, k = 3</p><p class="title is-4">256</p><p class="stat-sub">deterministic rules</p></div></div>
+        <div class="column"><div class="box has-text-centered"><p class="heading">2D von Neumann, k = 5</p><p class="title is-4">2<sup>32</sup></p><p class="stat-sub">deterministic rules</p></div></div>
+        <div class="column"><div class="box has-text-centered"><p class="heading">2D Moore, k = 9</p><p class="title is-4">2<sup>512</sup></p><p class="stat-sub">deterministic rules</p></div></div>
+      </div>
+      <p class="diagram-note has-text-centered">Stochastic rules form a continuum: each trajectory draws its own kernel <i>f</i> from a Dirichlet prior.</p>
+
+      <h3 class="title is-5 gallery-title">What is the best possible prediction?</h3>
+      <div class="content">
+        <p>
+          The kernel is drawn from a Dirichlet prior and never shown to the model. The optimal predictor has a closed form:
+          count earlier occurrences of the query&rsquo;s neighborhood configuration <i>c</i>, and how often each state <i>y</i> followed it.
+        </p>
+        <p class="formula">
+          P(<i>y</i> | <i>c</i>, context) = (<i>n</i><sub><i>c</i>,<i>y</i></sub> + &alpha;) / (<i>n</i><sub><i>c</i></sub> + <i>V</i>&alpha;)
+        </p>
+        <p>
+          For deterministic rules, a single earlier occurrence pins down the outcome. For stochastic rules, repeated occurrences
+          estimate its distribution. If <i>c</i> hasn&rsquo;t appeared yet, the context says nothing about <i>f</i>(&middot; | <i>c</i>)
+          and the best answer is the prior mean 1/<i>V</i>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Method -->
+  <section class="section" id="method">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">The spatial induction head: gather, then match</h2>
+      <div class="columns is-variable is-4">
+        <div class="column">
+          <div class="layer-card">
+            <p class="step-label">Layer 1</p>
+            <h3 class="title is-5">The gather</h3>
+            <p>
+              At every token, assemble the states of all routing cells: the parents that produced this cell (offsets
+              <i>D</i><sub>K</sub>) and the parents of the cell it must predict next (<i>D</i><sub>Q</sub> = <i>D</i><sub>K</sub> + <i>&ucirc;</i><sub>d</sub>).
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="layer-card">
+            <p class="step-label">Layer 2</p>
+            <h3 class="title is-5">The match</h3>
+            <p>
+              Compare the query configuration (at <i>D</i><sub>Q</sub>) with each earlier token&rsquo;s parent configuration (at <i>D</i><sub>K</sub>),
+              and average the states that followed the matches. This is Bayesian counting.
+            </p>
+          </div>
+        </div>
+      </div>
+      <figure class="paper-figure">
+        <img src="static/images/attn_gather_match.png" alt="Layer 1 and Layer 2 attention of a trained model on Rule 110" loading="lazy">
+        <figcaption>
+          Attention of the trained shared-head model on 1D ECA (<i>V</i> = 2, <i>k</i> = 3) for held-out Wolfram Rule 110.
+          Layer 1 concentrates on the four routing cells; Layer 2 concentrates on earlier cells whose parent configuration matches the query.
+        </figcaption>
+      </figure>
+
+      <div class="theorem-box">
+        <p class="step-label">Theorem (informal)</p>
+        <p>
+          A two-layer transformer can infer an unknown cellular-automaton rule from a serialized trajectory by gathering spatial
+          neighborhoods and matching them to earlier examples. On queries whose neighborhood configuration has already appeared in
+          context with an observed outcome, it achieves <strong>exact next-state prediction</strong> for deterministic rules, and an
+          <strong>arbitrarily accurate approximation of the Bayesian posterior predictive</strong> for stochastic rules.
+          The required width depends only on the neighborhood size, number of cell states, and spatial dimension,
+          <strong>not on grid size or trajectory length</strong>.
+        </p>
+      </div>
+
+      <h3 class="title is-5 gallery-title">Two ways to build the gather</h3>
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable compare-table">
+          <thead>
+            <tr><th></th><th>I: Dedicated heads</th><th>II: Shared head + MLP</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Layer-1 routing</td><td>One head per offset</td><td>One head gathers all offsets</td></tr>
+            <tr><td>Layer-1 MLP</td><td>None</td><td>One ReLU layer</td></tr>
+            <tr><td>Separating neighbors</td><td>Separate output blocks of the residual stream</td><td>A graph coloring of the routing set, decoded by the MLP</td></tr>
+            <tr><td>State recovery</td><td>Approximate, to any accuracy</td><td>Exact</td></tr>
+            <tr><td>Layer 2</td><td colspan="2" class="has-text-centered">Match configurations and aggregate outcomes (same operation)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="section hero is-light" id="results">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">In-context learning of unseen rules</h2>
+      <div class="content">
+        <p>Test rules are held out from training. Weights are frozen, and the model only sees the trajectory as context.</p>
+      </div>
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable results-table">
+          <thead>
+            <tr><th rowspan="2">Task</th><th rowspan="2">Architecture</th><th colspan="2" class="has-text-centered">Deterministic</th><th class="has-text-centered">Stochastic</th></tr>
+            <tr><th class="has-text-centered">TF cell acc &uarr;</th><th class="has-text-centered">AR cell acc &uarr;</th><th class="has-text-centered">AR KL (nats) &darr;</th></tr>
+          </thead>
+          <tbody>
+            <tr><td rowspan="2" class="task-cell">1D, <i>V</i> = 2, <i>k</i> = 3</td><td>Shared-head</td><td>1.0000</td><td>0.9999</td><td>0.0019</td></tr>
+            <tr><td>Dedicated-heads</td><td>1.0000</td><td>1.0000</td><td>0.0044</td></tr>
+            <tr><td rowspan="2" class="task-cell">1D, <i>V</i> = 3, <i>k</i> = 3</td><td>Shared-head</td><td>1.0000</td><td>1.0000</td><td>0.0026</td></tr>
+            <tr><td>Dedicated-heads</td><td>1.0000</td><td>1.0000</td><td>0.0004</td></tr>
+            <tr><td rowspan="2" class="task-cell">2D von Neumann, <i>V</i> = 2, <i>k</i> = 5</td><td>Shared-head</td><td>1.0000</td><td>1.0000</td><td>0.0013</td></tr>
+            <tr><td>Dedicated-heads</td><td>1.0000</td><td>0.9999</td><td>0.0038</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="columns is-variable is-4">
+        <div class="column"><p><strong>Deterministic:</strong> near-perfect autoregressive prediction, with 99.99&ndash;100% cell accuracy.</p></div>
+        <div class="column"><p><strong>Stochastic:</strong> the predictive distribution stays within 0.005 nats KL of the Bayes-optimal (<i>k</i>-gram) posterior predictive.</p></div>
+      </div>
+      <p class="diagram-note">
+        TF = teacher-forced; AR = autoregressive rollout. Every evaluation prefix contains every neighborhood configuration, so each scored query is resolvable.
+        AR KL = D<sub>KL</sub>(<i>q</i><sub><i>k</i>-gram</sub> &#8214; <i>q</i><sub>model</sub>) along the model&rsquo;s rollout.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mechanistic evidence -->
+  <section class="section" id="mechanism">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Do trained models use the predicted mechanism?</h2>
+
+      <h3 class="title is-5 gallery-title">They attend to the predicted positions, and depend on them</h3>
+      <figure class="paper-figure">
+        <img src="static/images/attn_mass_ablation.png" alt="Attention mass on predicted positions and accuracy under ablation" loading="lazy">
+        <figcaption>
+          <strong>Left:</strong> both architectures put substantial attention mass on the predicted positions: routing cells in Layer 1 and matched
+          precedents in Layer 2, across all three settings. <strong>Right:</strong> masking the routing cells (L1) or the matched precedents (L2)
+          lowers accuracy substantially, while masking the same number of random cells has little effect.
+        </figcaption>
+      </figure>
+
+      <h3 class="title is-5 gallery-title">Neighborhoods and predictions become decodable at the predicted layers</h3>
+      <figure class="paper-figure">
+        <img src="static/images/probes.png" alt="Layerwise linear probe results" loading="lazy">
+        <figcaption>
+          Linear probes; dashed lines mark the stage each construction predicts. The neighborhood configuration becomes decodable after the
+          L1 MLP for the shared-head model and after L1 attention for the dedicated-heads model. For both, the <i>k</i>-gram predictive
+          distribution becomes decodable after L2 attention.
+        </figcaption>
+      </figure>
+
+      <h3 class="title is-5 gallery-title">The same stages, visualized</h3>
+      <figure class="paper-figure">
+        <img src="static/images/tsne.png" alt="t-SNE of representations at each layer" loading="lazy">
+        <figcaption>
+          t-SNE of the shared-head model on deterministic binary 1D CA. Top row, colored by neighborhood: configurations separate after the L1 MLP.
+          Bottom row, colored by output: output values separate after L2 attention.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Takeaways -->
+  <section class="section hero is-light" id="takeaways">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Takeaways</h2>
+      <div class="columns is-multiline is-variable is-4">
+        <div class="column is-half"><div class="takeaway">
+          <p class="takeaway-q">How do transformers recover spatial structure from sequences?</p>
+          <p>Layer 1 routes attention using relative positions and gathers the relevant spatial neighbors.</p>
+        </div></div>
+        <div class="column is-half"><div class="takeaway">
+          <p class="takeaway-q">How do transformers use recovered structure to learn in context?</p>
+          <p>Layer 2 retrieves earlier examples with matching neighborhoods and aggregates their outcomes to predict the next state.</p>
+        </div></div>
+        <div class="column is-half"><div class="takeaway">
+          <p class="takeaway-q">Can we explain both abilities theoretically?</p>
+          <p>A two-layer transformer is enough for gather-and-match, with width independent of grid size and trajectory horizon. It predicts exactly for deterministic rules and arbitrarily close to the Bayesian posterior for stochastic rules.<sup>&dagger;</sup></p>
+        </div></div>
+        <div class="column is-half"><div class="takeaway">
+          <p class="takeaway-q">Do trained models exhibit the predicted mechanism?</p>
+          <p>Near-perfect deterministic rollouts and stochastic KL &lt; 0.005 on unseen rules. Attention ablations and layerwise probes support the predicted mechanism.</p>
+        </div></div>
+      </div>
+      <p class="diagram-note"><sup>&dagger;</sup> For neighborhood configurations observed in context.</p>
+    </div>
+  </section>
+  </main>
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <!-- TODO: once the arXiv version is up, switch to @article with journal={arXiv preprint arXiv:XXXX.XXXXX} -->
+      <pre id="bibtex-code"><code>@misc{kazemian2026spatial,
+  title={Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata},
+  author={Kazemian, Kimia and Xu, Menghan and Thickstun, John and Dean, Sarah},
+  year={2026}
+}</code></pre>
+    </div>
+  </section>
+  <!--End BibTex citation -->
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
