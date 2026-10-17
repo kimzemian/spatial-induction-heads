@@ -141,24 +141,18 @@
                 </span>
 
                 <span class="link-block">
-                  <a href="https://github.com/kimzemian/ICL_MCA" target="_blank"
+                  <a href="https://github.com/sdean-group/ICL-CA" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fab fa-github"></i></span>
                     <span>Code</span>
                   </a>
                 </span>
 
-                <!-- TODO: model checkpoints link. Replace this disabled button with:
                 <span class="link-block">
-                  <a href="CHECKPOINTS_URL" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="fas fa-download"></i></span><span>Checkpoints</span>
-                  </a>
-                </span>
-                -->
-                <span class="link-block">
-                  <a class="external-link button is-normal is-rounded is-dark" disabled aria-disabled="true" title="Model checkpoints coming soon">
+                  <a href="https://huggingface.co/collections/sdeangroup/spatial-induction-heads" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
                     <span class="icon"><i class="fas fa-download"></i></span>
-                    <span>Checkpoints (coming soon)</span>
+                    <span>Checkpoints</span>
                   </a>
                 </span>
 
@@ -180,14 +174,37 @@
   <section class="hero teaser">
     <div class="container is-max-desktop">
       <div class="hero-body">
-        <figure class="paper-figure">
-          <img src="static/images/teaser_rollout.png" alt="Ground truth, teacher-forced, and autoregressive predictions for Rule 110 and the Stavskaya stochastic automaton">
-        </figure>
         <h2 class="subtitle has-text-centered teaser-caption">
-          A two-layer transformer continues cellular automata it has <em>never seen during training</em>, from context alone.
-          Top: Wolfram Rule 110 (deterministic, Turing-complete). Bottom: Stavskaya, a stochastic CA with <i>p</i>&nbsp;=&nbsp;0.29,
-          colored by the predicted probability of state 1. The red box marks the context shown to the model.
+          A two-layer transformer works out each cellular automaton&rsquo;s rule <em>from context alone</em>.
+          In each panel the model sees only the rows in the orange box, then generates everything else itself, feeding its own predictions back in.
         </h2>
+        <figure class="paper-figure rollout-video">
+          <video autoplay muted loop playsinline preload="metadata" poster="static/videos/rollout_1d_det_poster.jpg"
+                 aria-label="Autoregressive rollouts of Rules 110, 30 and 150 on 64 cells">
+            <source src="static/videos/rollout_1d_det.mp4" type="video/mp4">
+          </video>
+          <figcaption>
+            <strong>1D deterministic:</strong> Rules 110, 30 and 150.
+          </figcaption>
+        </figure>
+        <figure class="paper-figure rollout-video">
+          <video autoplay muted loop playsinline preload="metadata" poster="static/videos/rollout_1d_stoch_poster.jpg"
+                 aria-label="Autoregressive rollouts of three stochastic automata on 64 cells, shaded by predicted probability">
+            <source src="static/videos/rollout_1d_stoch.mp4" type="video/mp4">
+          </video>
+          <figcaption>
+            <strong>1D stochastic:</strong> Stavskaya, stochastic traffic (noisy Rule 184) and Domany&ndash;Kinzel. Shading is the predicted probability of state 1.
+          </figcaption>
+        </figure>
+        <figure class="paper-figure rollout-video rollout-video-2d">
+          <video autoplay muted loop playsinline preload="metadata" poster="static/videos/rollout_2d_poster.jpg"
+                 aria-label="Autoregressive rollouts of three held-out 2D rules on a 6 by 6 torus">
+            <source src="static/videos/rollout_2d.mp4" type="video/mp4">
+          </video>
+          <figcaption>
+            <strong>2D (von Neumann, 6&nbsp;&times;&nbsp;6):</strong> three different rules.
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -422,10 +439,16 @@
         </div>
       </div>
       <figure class="paper-figure">
-        <img src="static/images/attn_gather_match.png" alt="Layer 1 and Layer 2 attention of a trained model on Rule 110" loading="lazy">
+        <video autoplay muted loop playsinline preload="metadata" poster="static/videos/attn_grid_anim_poster.jpg"
+               aria-label="Layer 1 and Layer 2 attention of a trained model on Rule 110, shown cell by cell">
+          <source src="static/videos/attn_grid_anim.mp4" type="video/mp4">
+          <img src="static/images/attn_gather_match.png" alt="Layer 1 and Layer 2 attention of a trained model on Rule 110">
+        </video>
         <figcaption>
-          Attention of the trained shared-head model on 1D ECA (<i>V</i> = 2, <i>k</i> = 3) for held-out Wolfram Rule 110.
+          Attention of the trained shared-head model on 1D ECA (<i>V</i> = 2, <i>k</i> = 3) for held-out Wolfram Rule 110,
+          one target cell at a time across rows <i>t</i><sub>6</sub> and <i>t</i><sub>7</sub>.
           Layer 1 concentrates on the four routing cells; Layer 2 concentrates on earlier cells whose parent configuration matches the query.
+          Shading is the model&rsquo;s attention from a single forward pass; the outlined boxes mark where the construction predicts it should go.
         </figcaption>
       </figure>
 
@@ -490,6 +513,16 @@
         TF = teacher-forced; AR = autoregressive rollout. Every evaluation prefix contains every neighborhood configuration, so each scored query is resolvable.
         AR KL = D<sub>KL</sub>(<i>q</i><sub><i>k</i>-gram</sub> &#8214; <i>q</i><sub>model</sub>) along the model&rsquo;s rollout.
       </p>
+
+      <figure class="paper-figure">
+        <img src="static/images/teaser_rollout.png" alt="Ground truth, teacher-forced, and autoregressive predictions for Rule 110 and the Stavskaya stochastic automaton" loading="lazy">
+        <figcaption>
+          Ground truth, teacher-forced and autoregressive predictions on two held-out rules.
+          Top: Wolfram Rule 110 (deterministic, Turing-complete). Bottom: Stavskaya, a stochastic CA with <i>p</i>&nbsp;=&nbsp;0.29,
+          colored by the predicted probability of state 1. The red box marks the context shown to the model.
+        </figcaption>
+      </figure>
+
     </div>
   </section>
 
@@ -566,11 +599,14 @@
           <span class="copy-text">Copy</span>
         </button>
       </div>
-      <pre id="bibtex-code"><code>@article{kazemian2026spatial,
-  title={Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata},
-  author={Kazemian, Kimia and Xu, Menghan and Thickstun, John and Dean, Sarah},
-  journal={arXiv preprint arXiv:2610.09124},
-  year={2026}
+      <pre id="bibtex-code"><code>@misc{Kazemian2026:spatial,
+  title         = {Spatial Induction Heads: In-Context Learning of Multidimensional Cellular Automata},
+  author        = {Kimia Kazemian and Menghan Xu and John Thickstun and Sarah Dean},
+  year          = {2026},
+  eprint        = {2610.09124},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2610.09124}
 }</code></pre>
     </div>
   </section>

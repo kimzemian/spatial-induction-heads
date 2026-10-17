@@ -780,6 +780,8 @@ a:focus {
 
 .paper-figure { margin: 1.5rem 0; }
 .paper-figure img { width: 100%; height: auto; display: block; }
+.paper-figure video { width: 100%; height: auto; display: block; background: #fff; }
+.rollout-video-2d video { max-width: 720px; margin: 0 auto; }
 .paper-figure figcaption,
 .diagram-note {
   font-size: 0.92rem;
